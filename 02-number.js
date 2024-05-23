@@ -30,11 +30,4 @@ let v = parseInt("abcde");
 console.log(v);
 console.log(typeof v, isNaN(v));
 
-const s = "Modern JavaScript"
 
-console.log(s.indexOf("Java"));
-console.log(s.indexOf("java"));
-console.log(s.lastIndexOf("Script"));
-
-console.log(s.replace("JavaScript", "JS"));
-console.log(s);

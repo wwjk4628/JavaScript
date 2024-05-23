@@ -62,14 +62,4 @@ console.log(message);
 
 console.log("===================");
 
-console.log(123 == "123");
-console.log(123 === "123");
 
-let v1, v2;
-console.log(v1 == v2);
-console.log(v1 === v2);
-console.log(typeof v1, typeof v2);
-v1, v2 = null;
-console.log(v1 == v2);
-console.log(v1 === v2);
-console.log(typeof v1, typeof v2);

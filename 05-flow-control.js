@@ -63,7 +63,7 @@ while(i < j){
 }
 
 j = 5;
-console.log("\n")
+console.log("\nfor")
 for(i = j; i > 0; i--){
     for(n = j+1; n > i; n--){
         starplus += star;

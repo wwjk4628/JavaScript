@@ -45,8 +45,3 @@ console.log(typeof(v));
 v = Math.PI;
 console.log(typeof(v));
 
-console.log(Math.round(Math.PI));
-console.log(Math.min(1, 2, 3, 4, 5), Math.max(1, 2, 3, 4, 5));
-v = parseInt("abcde");
-console.log(v);
-console.log(typeof v, isNaN(v));
