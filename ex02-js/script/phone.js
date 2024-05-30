@@ -8,32 +8,33 @@ let message = "";
 
 
 
-function onchange(event){
+function onchange(event) {
     message = event.target.value;
     console.dir(event.target.value);
     btnSearch.innerText = message + "검색";
 }
 
-function onclick(){
+function onclick() {
     btnSearch.innerText = message + "검색";
 }
-function onclickImage(event){
+function onclickImage(event) {
     console.dir(event.target.src);
     const image = event.target.src;
     mainImage.setAttribute("src", image);
     mainImage.getAttribute(`title`)
     mainImage.setAttribute("title", `${event.target.title}`)
-    
-    
+    let myH2 = document.querySelector("#product-info > h2");
+    myH2.innerText = event.target.getAttribute("title");
+
 }
 
-function mainOnclick(x){
+function mainOnclick(x) {
     alert("hi");
-            console.log(x);
-            console.log(x.type);
-            console.log(x.target);
+    console.log(x);
+    console.log(x.type);
+    console.log(x.target);
 
-    
+
 }
 
 // function onload(){
@@ -42,7 +43,7 @@ function mainOnclick(x){
 
 // function onloadsub(){
 //     subImage.setAttribute("title", `제품: ${subImage.getAttribute(`title`)}`);
-    
+
 // }
 
 keywordInput.addEventListener("change", onchange);
