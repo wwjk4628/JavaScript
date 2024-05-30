@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>iPhones</title>
+    <style>
+      #product-info img.selected {
+        width: 225px;
+        height: 265px;
+        float: left;
+        border: 1px solid lightslategrey;
+        margin: 5px;
+      }
+
+      #product-list li {
+        list-style-type: none;
+        border: 1px solid lightslategrey;
+        margin: 5px;
+        float: left;
+      }
+
+      #product-list li img {
+        width: 100px;
+        height: 100px;
+      }
+    </style>
+    <script>
+        window.addEventListener("load", (evt) => {
+            let products = document.getElementsByClassName("sub-image");
+            Array.from(products).forEach(x => {
+                x.addEventListener("click", (x) => {
+                    console.log(x.target);
+                    mainImage = document.getElementById("main-image");
+                    mainImage.setAttribute("src", x.target.getAttribute("src"));
+                    mainImage.setAttribute("title", x.target.getAttribute("title"));
+                    let myH2 = document.querySelector("#product-info > h2");
+                    myH2.innerText = x.target.getAttribute("title");
+                } , false);
+            });
+            
+
+        });
+    </script>
+  </head>
+
+  <body>
+    <div id="product-info">
+      <img
+        id="main-image"
+        src="images/iphone-xs.jpeg"
+        class="selected"
+        title="iPhones XS"
+      />
+      <h2>iPhone Xs</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+        mollit anim id est laborum.
+      </p>
+      <h3>Products</h3>
+      <ul id="product-list">
+        <li>
+          <img
+            class="sub-image"
+            src="images/iphone-xs.jpeg"
+            title="iPhone XS"
+          />
+        </li>
+        <li>
+          <img
+            class="sub-image"
+            src="images/iphone-xr.jpeg"
+            title="iPhone XR"
+          />
+        </li>
+        <li>
+          <img class="sub-image" src="images/iphone8.jpeg" title="iPhone 8" />
+        </li>
+        <li>
+          <img
+            class="sub-image"
+            src="images/ipad-mini.jpeg"
+            title="iPad Mini"
+          />
+        </li>
+      </ul>
+      <input type="text" id="keyword" /><button id="btn-search">검색</button>
+    </div>
+  </body>
+  <script>
+    function testAttributes() {
+        let mainImage = document.getElementById("main-image");
+        console.log(mainImage);
+        console.log(mainImage.getAttributeNames());
+        console.log(mainImage.getAttribute("title"));
+        console.log(mainImage.getAttribute("class"));
+        
+        console.log(mainImage.setAttribute("title", "Coolest Phone"));
+        console.log(mainImage.getAttribute("title"));
+
+        let subs = document.getElementsByClassName("sub-image");
+        console.log(subs);
+        for (let i = 0; i < subs.length; i++) {
+            subs[i].setAttribute("title", `제품: ${subs[i].getAttribute("title")}`);
+        }
+    }
+    // testAttributes();
+
+    function testMainImgClick() {
+        const mainImage = document.getElementById("main-image");
+        mainImage.addEventListener("click", (x) => {
+            alert("hi");
+            console.log(x);
+            console.log(x.type);
+            console.log(x.target);
+        } , false);
+    }
+    // testMainImgClick();
+
+
+
+
+  </script>
+</html>
