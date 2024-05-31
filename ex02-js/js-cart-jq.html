@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <title>JS Cart</title>
+    <style>
+        #list * {
+            margin-bottom: 3px;
+            /* margin-top: 3px; */
+            /* border: 1px solid red; */
+        }
+
+        #list li {
+            height: 30px;
+        }
+
+        /* #list li div {
+                display: inline-block;
+            } */
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+        integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+
+
+    <script src="script/jscart-jq.js"></script>
+
+
+</head>
+
+<body>
+    <div id="header">
+        <h1>Shopping List</h1>
+    </div>
+    <div id="cart-list">
+        <ul id="list">
+            <li>무</li>
+            <li>배추</li>
+            <li>쪽파</li>
+            <li>고춧가루</li>
+        </ul>
+    </div>
+    <div id="cart-input">
+        <input id="item"><button id="btn-add">추가</button>
+    </div>
+    <div id="footer">
+        &copy;Bit Academy
+    </div>
+
+</body>
+
+</html>

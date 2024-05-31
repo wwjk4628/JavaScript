@@ -19,6 +19,7 @@ window.addEventListener("load", event => {
     }
 
     document.getElementById("btn-add").addEventListener("click", addItem);
+    document.getElementById("item").addEventListener("change", addItem)
 
 
 
