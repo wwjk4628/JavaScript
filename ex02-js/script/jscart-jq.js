@@ -21,6 +21,7 @@ function addItem() {
         btnDel.on("click", event => {
             let removeItem = $(event.target.parentNode.parentNode);
             removeItem.remove();
+            console.log(this);
         });
     }
 }

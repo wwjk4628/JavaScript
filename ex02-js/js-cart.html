@@ -5,22 +5,23 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <title>JS Cart</title>
     <style>
-        /* #list * {
-            height: 30px;
-            margin: 3px;
-            border: 1px solid red;
-        } */
+        #list * {
+            margin-bottom: 3px;
+            /* margin-top: 3px; */
+            /* border: 1px solid red; */
+        }
 
         #list li {
-            padding: 3px;
+            height: 30px;
         }
 
         /* #list li div {
             display: inline-block;
         } */
     </style>
-    <script src="script/jscart-vjs.js"></script>
-    
+    <!-- <script src="script/jscart-vjs.js"></script> -->
+    <script src="/script/jquery-3.7.1.js"></script>
+
 
 </head>
 
@@ -42,7 +43,30 @@
     <div id="footer">
         &copy;Bit Academy
     </div>
+    <script>
+        $("#list > li").each(function () {
+            $(this).remove();
+        })
 
+        $("#btn-add").on("click", function () {
+            if ($("#item").val().length > 0) {
+
+                let item = $("<li>");
+                item.text($("#item").val());
+                let toolbar = $("<div>");
+                let delBtn = $("<button>").addClass("btn-del");
+                delBtn.text("삭제");
+                toolbar.append(delBtn);
+                item.append(toolbar);
+                $("#list").append(item);
+                toolbar.css({ display: "inline", float: "right" });
+                $("#item").val("").focus();
+            }
+        });
+        $("#list").on("click", ".btn-del", function (event) {
+            $(this).parent().parent().remove();
+        });
+    </script>
 </body>
 
 </html>
