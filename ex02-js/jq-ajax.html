@@ -59,130 +59,191 @@
                         console.error(error);
                     })
             });
+            $("#btnCallMovies").on("click", async event => {
+                try {
+                    const response = await fetch("http://localhost:3000/movies");
+                    const data = await response.json();
+                    $("#list").empty();
+                    data.movies.forEach(movie => {
+                        const { title, director, id, image } = movie;
+                        const imgSrc = `http://localhost:3000/images/${image}`;
+                        const listItem = `
+                <tr>
+                    <td><img src="${imgSrc}" class="poster"></td>
+                    <td>${title}</td>
+                    <td>${director}</td>
+                    <td>${id}</td>
+                </tr>`;
+                        $("#list").append(listItem);
+                        $("#list").on("click", "tr", function () {
+                            let id = $(this).find("td:last").text();
 
-            $("#btnCallMovies").on("click", event => {
-                fetch("http://localhost:3000/movies")
-                    .then(response => {
-                        console.log(response);
-                        return response.json();
-                    })
-                    .then(data => {
-                        $("#list").html("");
-                        console.log(data);
-                        const movies = data.movies
-                        for (let i = 0; i < movies.length; i++) {
-                            // 개별 영화 정보 받아오기
-                            let movie = movies[i];
-                            // console.log(movie);
+                            $.ajax({
+                                url: "http://localhost:3000/movies/" + id,
+                                type: "GET",
+                                dataType: "json",
+                                success: function (response) {
+                                    const movies = response.movie;
 
-                            // 영화 정보
-                            let img = "http://localhost:3000/images/" + movie.image;
-                            let title = movie.title;
-                            let director = movie.director;
-                            let id = movie.id;
-                            console.log(title, director, img, id);
+                                    // 새 창을 여는 코드
+                                    let newWindow = window.open("", "_blank", "width=600,height=400");
 
-                            // tr 요소를 생성 -> 정보 연결 -> table#list의 자식요소로 추가
-                            let list = $("<tr>")
-                            list.html(`
-                            <td><img src="${img}" class="poster"></td>
-                            <td>${title}</td>
-                            <td>${director}</td>
-                            <td>${id}</td>
-                                `);
-                            $("#list").append(list);
+                                    // 새 창에 내용 추가
+                                    let content = "<h1>영화 정보</h1>";
+                                    for (let i = 0; i < movies.length; i++) {
+                                        let movie = movies[i];
+                                        content += `
+                        <h2>포스터:<img src="http://localhost:3000/images/${movie.image}" class="poster"></h2>
 
+                        <br>
+                        <h2>개봉일:${movie.year}</h2>
 
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    })
-                // $.ajax({
-                //     url: "http://localhost:3000/movies",
-                //     type: "GET",
-                //     dataType: "json",
-                //     success: function (response) {
-                //         console.log(response);
+                        <br>
+                        <h2>제목:${movie.title}</h2>
 
-                //         const movies = response.movies;
-                //         console.log(movies);
-                //         // loop
-                //         for (let i = 0; i < movies.length; i++) {
-                //             // 개별 영화 정보 받아오기
-                //             let movie = movies[i];
-                //             // console.log(movie);
+                        <br>
+                        <h2>작가:${movie.director}</h2>
 
-                //             // 영화 정보
-                //             let img = "http://localhost:3000/images/" + movie.image;
-                //             let title = movie.title;
-                //             let director = movie.director;
-                //             let id = movie.id;
-                //             console.log(title, director, img);
+                        <br>
+                        <h2>번호:${movie.id}</h2>
 
-                //             // tr 요소를 생성 -> 정보 연결 -> table#list의 자식요소로 추가
-                //             let list = $("<tr>")
-                //             list.html(`
-                //             <td><img src="${img}" class="poster"></td>
-                //             <td>${title}</td>
-                //             <td>${director}</td>
-                //             <td>${id}</td>
-                //                 `);
-                //             $("#list").append(list);
+                        <hr>
+                    `;
+                                    }
+                                    newWindow.document.write(content);
+                                }
+                            });
+                        });
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+            });
 
 
-                //         }
+            //     $("#btnCallMovies").on("click", event => {
+            //         fetch("http://localhost:3000/movies")
+            //             .then(response => {
+            //                 console.log(response);
+            //                 return response.json();
+            //             })
+            //             .then(data => {
+            //                 $("#list").html("");
+            //                 console.log(data);
+            //                 const movies = data.movies
+            //                 for (let i = 0; i < movies.length; i++) {
+            //                     // 개별 영화 정보 받아오기
+            //                     let movie = movies[i];
+            //                     // console.log(movie);
 
-                //     },
-                //     error: function (request, status, error) {
-                //         console.log(error);
-                //     }
-                // })
+            //                     // 영화 정보
+            //                     let img = "http://localhost:3000/images/" + movie.image;
+            //                     let title = movie.title;
+            //                     let director = movie.director;
+            //                     let id = movie.id;
+            //                     console.log(title, director, img, id);
+
+            //                     // tr 요소를 생성 -> 정보 연결 -> table#list의 자식요소로 추가
+            //                     let list = $("<tr>")
+            //                     list.html(`
+            //                     <td><img src="${img}" class="poster"></td>
+            //                     <td>${title}</td>
+            //                     <td>${director}</td>
+            //                     <td>${id}</td>
+            //                         `);
+            //                     $("#list").append(list);
+
+
+            //                 }
+            //             })
+            //             .catch(error => {
+            //                 console.log(error);
+            //             })
+            //         // $.ajax({
+            //         //     url: "http://localhost:3000/movies",
+            //         //     type: "GET",
+            //         //     dataType: "json",
+            //         //     success: function (response) {
+            //         //         console.log(response);
+
+            //         //         const movies = response.movies;
+            //         //         console.log(movies);
+            //         //         // loop
+            //         //         for (let i = 0; i < movies.length; i++) {
+            //         //             // 개별 영화 정보 받아오기
+            //         //             let movie = movies[i];
+            //         //             // console.log(movie);
+
+            //         //             // 영화 정보
+            //         //             let img = "http://localhost:3000/images/" + movie.image;
+            //         //             let title = movie.title;
+            //         //             let director = movie.director;
+            //         //             let id = movie.id;
+            //         //             console.log(title, director, img);
+
+            //         //             // tr 요소를 생성 -> 정보 연결 -> table#list의 자식요소로 추가
+            //         //             let list = $("<tr>")
+            //         //             list.html(`
+            //         //             <td><img src="${img}" class="poster"></td>
+            //         //             <td>${title}</td>
+            //         //             <td>${director}</td>
+            //         //             <td>${id}</td>
+            //         //                 `);
+            //         //             $("#list").append(list);
+
+
+            //         //         }
+
+            //         //     },
+            //         //     error: function (request, status, error) {
+            //         //         console.log(error);
+            //         //     }
+            //         // })
 
 
 
-            })
-            // 실습:
-            // 개별 영화 클릭하면 새창에 영화 상세 정보를 받아와서 표시
-            $("#list").on("click", "tr", function () {
-    let id = $(this).find("td:last").text();
+            //     })
+            //     // 실습:
+            //     // 개별 영화 클릭하면 새창에 영화 상세 정보를 받아와서 표시
+            //     $("#list").on("click", "tr", function () {
+            //         let id = $(this).find("td:last").text();
 
-    $.ajax({
-        url: "http://localhost:3000/movies/" + id,
-        type: "GET",
-        dataType: "json",
-        success: function (response) {
-            const movies = response.movie;
+            //         $.ajax({
+            //             url: "http://localhost:3000/movies/" + id,
+            //             type: "GET",
+            //             dataType: "json",
+            //             success: function (response) {
+            //                 const movies = response.movie;
 
-            // 새 창을 여는 코드
-            let newWindow = window.open("", "_blank", "width=600,height=400");
-            
-            // 새 창에 내용 추가
-            let content = "<h1>영화 정보</h1>";
-            for (let i = 0; i < movies.length; i++) {
-                let movie = movies[i];
-                content += `
-                    <h2>포스터:<img src="http://localhost:3000/images/${movie.image}" class="poster"></h2>
-                    
-                    <br>
-                    <h2>개봉일:${movie.year}</h2>
-                    
-                    <br>
-                    <h2>제목:${movie.title}</h2>
-                    
-                    <br>
-                    <h2>작가:${movie.director}</h2>
-                    
-                    <br>
-                    <h2>번호:${movie.id}</h2>
-                    
-                    <hr>
-                `;
-            }
-            newWindow.document.write(content);
-        }
-    });
-});
+            //                 // 새 창을 여는 코드
+            //                 let newWindow = window.open("", "_blank", "width=600,height=400");
+
+            //                 // 새 창에 내용 추가
+            //                 let content = "<h1>영화 정보</h1>";
+            //                 for (let i = 0; i < movies.length; i++) {
+            //                     let movie = movies[i];
+            //                     content += `
+            //             <h2>포스터:<img src="http://localhost:3000/images/${movie.image}" class="poster"></h2>
+
+            //             <br>
+            //             <h2>개봉일:${movie.year}</h2>
+
+            //             <br>
+            //             <h2>제목:${movie.title}</h2>
+
+            //             <br>
+            //             <h2>작가:${movie.director}</h2>
+
+            //             <br>
+            //             <h2>번호:${movie.id}</h2>
+
+            //             <hr>
+            //         `;
+            //                 }
+            //                 newWindow.document.write(content);
+            //             }
+            //         });
+            //     });
 
 
         });
