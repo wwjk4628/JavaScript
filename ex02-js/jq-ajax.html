@@ -65,7 +65,7 @@
                     const data = await response.json();
                     $("#list").empty();
                     data.movies.forEach(movie => {
-                        const { title, director, id, image } = movie;
+                        const { title, director, id, image, year } = movie;
                         const imgSrc = `http://localhost:3000/images/${image}`;
                         const listItem = `
                 <tr>
@@ -76,7 +76,7 @@
                 </tr>`;
                         $("#list").append(listItem);
                         $("#list").on("click", "tr", function () {
-                            let id = $(this).find("td:last").text();
+
 
                             $.ajax({
                                 url: "http://localhost:3000/movies/" + id,
@@ -89,27 +89,25 @@
                                     let newWindow = window.open("", "_blank", "width=600,height=400");
 
                                     // 새 창에 내용 추가
-                                    let content = "<h1>영화 정보</h1>";
-                                    for (let i = 0; i < movies.length; i++) {
-                                        let movie = movies[i];
-                                        content += `
-                        <h2>포스터:<img src="http://localhost:3000/images/${movie.image}" class="poster"></h2>
+                                    let content = `
+                                    <h1>영화 정보</h1>
+                                    <h2>포스터:<img src="http://localhost:3000/images/${image}" class="poster"></h2>
 
-                        <br>
-                        <h2>개봉일:${movie.year}</h2>
+                                    <br>
+                                    <h2>개봉일:${year}</h2>
 
-                        <br>
-                        <h2>제목:${movie.title}</h2>
+                                    <br>
+                                    <h2>제목:${title}</h2>
 
-                        <br>
-                        <h2>작가:${movie.director}</h2>
+                                    <br>
+                                    <h2>작가:${director}</h2>
 
-                        <br>
-                        <h2>번호:${movie.id}</h2>
+                                    <br>
+                                    <h2>번호:${id}</h2>
 
-                        <hr>
-                    `;
-                                    }
+                                    <hr>
+                                    `;
+
                                     newWindow.document.write(content);
                                 }
                             });
