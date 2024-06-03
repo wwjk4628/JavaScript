@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <style>
+        .poster {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+
+    <!-- jQuery -->
+    <script src="script/jquery-3.7.1.js"></script>
+    <script>
+        // 페이지 초기화
+        $(document).ready(event => {
+            //  #btnCallSnippet에 click 이벤트
+            $("#btnCallSnippet").on("click", event => {
+                // Ajax로 snippet.html 호출
+                // $.ajax({
+                //     url: "snippet.html",
+                //     type: "GET",
+                //     // data:    서버로 전송할 데이터
+                //     dataType: "text",
+                //     success: function (response) {
+                //         // response -> 응답정보
+                //         console.log(response);
+                //         $("#info").html(response);
+                //     },
+                //     error: function (request, status, error) {
+                //         // request: 요청정보
+                //         // status: 상태 정보
+                //         // error: 에러의 상세 정보
+                //         console.log(error);
+                //     }
+
+                // })
+
+                //  ES는 비동기통신을 위한 표준 함수 fetch를 내장했음 
+                // -> 세밀한 통신제어를 위해서는 axios (라이브러리) 추천
+                // 일반적 통신 제어를 위해서는 fetch 함수를 활용
+
+                // fetch(url, options)
+                fetch("snippet.html")
+                    .then(response => {
+                        console.log(response);
+                        return response.text();
+                    })
+                    .then(data => {
+                        console.log(data);
+                        $("#info").html(data);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    })
+            });
+
+            $("#btnCallMovies").on("click", event => {
+                fetch("http://localhost:3000/movies")
+                    .then(response => {
+                        console.log(response);
+                        return response.json();
+                    })
+                    .then(data => {
+                        $("#list").html("");
+                        console.log(data);
+                        const movies = data.movies
+                        for (let i = 0; i < movies.length; i++) {
+                            // 개별 영화 정보 받아오기
+                            let movie = movies[i];
+                            // console.log(movie);
+
+                            // 영화 정보
+                            let img = "http://localhost:3000/images/" + movie.image;
+                            let title = movie.title;
+                            let director = movie.director;
+                            let id = movie.id;
+                            console.log(title, director, img, id);
+
+                            // tr 요소를 생성 -> 정보 연결 -> table#list의 자식요소로 추가
+                            let list = $("<tr>")
+                            list.html(`
+                            <td><img src="${img}" class="poster"></td>
+                            <td>${title}</td>
+                            <td>${director}</td>
+                            <td>${id}</td>
+                                `);
+                            $("#list").append(list);
+
+
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                // $.ajax({
+                //     url: "http://localhost:3000/movies",
+                //     type: "GET",
+                //     dataType: "json",
+                //     success: function (response) {
+                //         console.log(response);
+
+                //         const movies = response.movies;
+                //         console.log(movies);
+                //         // loop
+                //         for (let i = 0; i < movies.length; i++) {
+                //             // 개별 영화 정보 받아오기
+                //             let movie = movies[i];
+                //             // console.log(movie);
+
+                //             // 영화 정보
+                //             let img = "http://localhost:3000/images/" + movie.image;
+                //             let title = movie.title;
+                //             let director = movie.director;
+                //             let id = movie.id;
+                //             console.log(title, director, img);
+
+                //             // tr 요소를 생성 -> 정보 연결 -> table#list의 자식요소로 추가
+                //             let list = $("<tr>")
+                //             list.html(`
+                //             <td><img src="${img}" class="poster"></td>
+                //             <td>${title}</td>
+                //             <td>${director}</td>
+                //             <td>${id}</td>
+                //                 `);
+                //             $("#list").append(list);
+
+
+                //         }
+
+                //     },
+                //     error: function (request, status, error) {
+                //         console.log(error);
+                //     }
+                // })
+
+
+
+            })
+            // 실습:
+            // 개별 영화 클릭하면 새창에 영화 상세 정보를 받아와서 표시
+            $("#list").on("click", "tr", function () {
+    let id = $(this).find("td:last").text();
+
+    $.ajax({
+        url: "http://localhost:3000/movies/" + id,
+        type: "GET",
+        dataType: "json",
+        success: function (response) {
+            const movies = response.movie;
+
+            // 새 창을 여는 코드
+            let newWindow = window.open("", "_blank", "width=600,height=400");
+            
+            // 새 창에 내용 추가
+            let content = "<h1>영화 정보</h1>";
+            for (let i = 0; i < movies.length; i++) {
+                let movie = movies[i];
+                content += `
+                    <h2>포스터:<img src="http://localhost:3000/images/${movie.image}" class="poster"></h2>
+                    
+                    <br>
+                    <h2>개봉일:${movie.year}</h2>
+                    
+                    <br>
+                    <h2>제목:${movie.title}</h2>
+                    
+                    <br>
+                    <h2>작가:${movie.director}</h2>
+                    
+                    <br>
+                    <h2>번호:${movie.id}</h2>
+                    
+                    <hr>
+                `;
+            }
+            newWindow.document.write(content);
+        }
+    });
+});
+
+
+        });
+    </script>
+</head>
+
+<body>
+    <button id="btnCallSnippet">HTML 조각 불러오기</button>
+    <button id="btnCallMovies">영화 목록 불러오기</button>
+
+    <!-- HTML 조각 불러와서 렌더링할 영역 -->
+
+    <div id="info">
+
+    </div>
+
+    <!-- JSON을 받아와서 동적으로 만들 테이블 -->
+    <table id="list" border="1" width="640">
+
+    </table>
+</body>
+
+</html>

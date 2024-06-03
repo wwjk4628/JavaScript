@@ -64,7 +64,7 @@
             }
         });
         $("#list").on("click", ".btn-del", function (event) {
-            $(this).parent().parent().remove();
+            $(this).closest("li").remove();
         });
     </script>
 </body>
