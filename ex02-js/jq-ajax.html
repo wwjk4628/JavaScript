@@ -75,43 +75,66 @@
                     <td>${id}</td>
                 </tr>`;
                         $("#list").append(listItem);
-                        $("#list").on("click", "tr", function () {
 
+                    });
+                    $("#list").on("click", "tr", async function () {
 
-                            $.ajax({
-                                url: "http://localhost:3000/movies/" + id,
-                                type: "GET",
-                                dataType: "json",
-                                success: function (response) {
-                                    const movies = response.movie;
-
-                                    // 새 창을 여는 코드
-                                    let newWindow = window.open("", "_blank", "width=600,height=400");
-
-                                    // 새 창에 내용 추가
-                                    let content = `
-                                    <h1>영화 정보</h1>
-                                    <h2>포스터:<img src="http://localhost:3000/images/${image}" class="poster"></h2>
-
-                                    <br>
-                                    <h2>개봉일:${year}</h2>
-
-                                    <br>
-                                    <h2>제목:${title}</h2>
-
-                                    <br>
-                                    <h2>작가:${director}</h2>
-
-                                    <br>
-                                    <h2>번호:${id}</h2>
-
-                                    <hr>
-                                    `;
-
-                                    newWindow.document.write(content);
-                                }
+                        try {
+                            let mid = $(this).find("td:last").text();
+                            console.log(mid);
+                            const response = await fetch("http://localhost:3000/movies/" + mid);
+                            const data = await response.json();
+                            console.log(data);
+                            data.movie.forEach(movie => {
+                                let newWindow = window.open("", "_blank", "width=600,height=400");
+                                const { title, director, id, image, year } = movie;
+                                const imgSrc = `http://localhost:3000/images/${image}`;
+                                let content = `
+                                <h1>영화 정보</h1>
+                                <h2>포스터:<img src="http://localhost:3000/images/${image}" class="poster"></h2>
+                                <br>
+                                <h2>개봉일:${year}</h2>
+                                <br>
+                                <h2>제목:${title}</h2>
+                                <br>
+                                <h2>작가:${director}</h2>
+                                <br>
+                                <h2>번호:${id}</h2>
+                                <hr>
+                                `;
+                                newWindow.document.write(content);
                             });
-                        });
+                        } catch (error) {
+                            console.error(error);
+                        }
+                        // $.ajax({
+                        //     url: "http://localhost:3000/movies/" + id,
+                        //     type: "GET",
+                        //     dataType: "json",
+                        //     success: function (response) {
+                        //         const movies = response.movie;
+
+                        //         // 새 창을 여는 코드
+                        //         let newWindow = window.open("", "_blank", "width=600,height=400");
+
+                        //         // 새 창에 내용 추가
+                        //         let content = `
+                        //         <h1>영화 정보</h1>
+                        //         <h2>포스터:<img src="http://localhost:3000/images/${image}" class="poster"></h2>
+                        //         <br>
+                        //         <h2>개봉일:${year}</h2>
+                        //         <br>
+                        //         <h2>제목:${title}</h2>
+                        //         <br>
+                        //         <h2>작가:${director}</h2>
+                        //         <br>
+                        //         <h2>번호:${id}</h2>
+                        //         <hr>
+                        //         `;
+
+                        //         newWindow.document.write(content);
+                        //     }
+                        // });
                     });
                 } catch (error) {
                     console.error(error);
